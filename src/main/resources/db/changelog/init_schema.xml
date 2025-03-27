@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+    
+    <changeSet id="202502141315" author="IvanM">
+        <createTable tableName="question">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="question_id_pk"/>
+            </column>
+            <column name="chat_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="topic" type="varchar(200)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    
+    <changeSet id="202502141329" author="IvanM">
+        <createTable tableName="answer">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="advert_id_pk"/>
+            </column>
+            <column name="name" type="varchar(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="is_correct" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_id" type="int">
+                <constraints nullable="false"
+                             referencedTableName="question"
+                             referencedColumnNames="id"
+                             foreignKeyName="question_id_fk"/>
+            </column>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

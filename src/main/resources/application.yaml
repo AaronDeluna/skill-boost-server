@@ -1,0 +1,12 @@
+server:
+  port: 8081
+
+integration-ai:
+  api-key: ${API_KEY}
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/SkillBoostService
+    username: ivanmilovanov
+    password: ivanmilovanov
+    driver-class-name: org.postgresql.Driver

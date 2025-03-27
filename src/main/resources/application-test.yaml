@@ -1,0 +1,13 @@
+server:
+  port: 8081
+
+integration-ai:
+  azure-openai-endpoint: ${AZURE_OPENAI_ENDPOINT}
+  api-key: 9DNWf17IOTfbOuk5q9hwallZ8sp9gvaKtrxX2YslDeHB5WnErbyrJQQJ99BCACHYHv6XJ3w3AAAAACOGFNbc
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/SkillBoostService
+    username: ivanmilovanov
+    password: ivanmilovanov
+    driver-class-name: org.postgresql.Driver
