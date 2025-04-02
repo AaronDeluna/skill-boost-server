@@ -20,20 +20,23 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
-    private static final String PROMT_ROLE = "system";
+    private static final String PROMPT_ROLE = "system";
     private static final String AI_MODEL = "gpt-3.5-turbo";
-    private static final String PROMT_MESSAGE = "Сгенерируй строго валидный JSON без лишних полей и комментариев. " +
+    private static final Double AI_RESPONSE_TEMPERATURE = 0.5;
+    private static final String PROMPT_MESSAGE = "Сгенерируй строго валидный JSON без лишних полей и комментариев. " +
             "JSON должен содержать одну тему с названием: \\\"%s\\\". " +
-            "Добавь ровно 5 уникальных вопроса по этой теме на русском языке. " +
-            "К каждому вопросу придумай ровно 3 варианта ответа на русском, где только один из них должен иметь " +
-            "\\\"isCorrect\\\": true, остальные \\\"isCorrect\\\": false. " +
-            "Все вопросы и ответы должны отличаться между собой по смыслу и формулировке. " +
+            "Добавь ровно 5 уникальных вопросов по этой теме на русском языке. " +
+            "К каждому вопросу придумай ровно 3 варианта ответа на русском, содержащих осмысленную информацию. " +
+            "Ответы не должны быть примитивными, а должны отражать ключевые аспекты и принципы темы. " +
+            "Один из ответов должен быть правильным и иметь значение \\\"isCorrect\\\": true, остальные должны иметь \\\"isCorrect\\\": false. " +
+            "Все вопросы должны быть разнообразными, с различной сложностью и формулировкой, и должны охватывать разные аспекты темы. " +
             "Используй только следующие поля: \\\"topic\\\", \\\"questions\\\", \\\"question\\\", \\\"answers\\\", \\\"text\\\", \\\"isCorrect\\\".";
     @Value("${integration-ai.api-key}")
     private String apiKey;
@@ -43,10 +46,11 @@ public class QuestionService {
 
     public QuestionDtoRes create(QuestionDtoRq questionDtoRq) {
         OpenAiService service = new OpenAiService(apiKey);
-        ChatMessage systemMessage = new ChatMessage(PROMT_ROLE, String.format(PROMT_MESSAGE, questionDtoRq.getTopic()));
+        ChatMessage systemMessage = new ChatMessage(PROMPT_ROLE, String.format(PROMPT_MESSAGE, questionDtoRq.getTopic()));
         ChatCompletionRequest request = ChatCompletionRequest.builder()
                 .model(AI_MODEL)
                 .messages(List.of(systemMessage))
+                .temperature(AI_RESPONSE_TEMPERATURE)
                 .build();
 
         ChatCompletionResult response = service.createChatCompletion(request);
@@ -95,6 +99,8 @@ public class QuestionService {
             answer.setQuestion(question);
             answers.add(answer);
         }
+
+        Collections.shuffle(answers);
 
         answerRepository.saveAll(answers);
         question.setAnswers(answers);

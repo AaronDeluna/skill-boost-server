@@ -22,10 +22,8 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Queue;
 
 @Slf4j
 @Service
@@ -39,10 +37,10 @@ public class QuestiontService {
                 "temperature": 0.7
             }
             """;
-    private static final String PROMT_MESSAGE = "Сгенерируй строго валидный JSON без лишних полей и комментариев. " +
+    private static final String PROMPT_MESSAGE = "Сгенерируй строго валидный JSON без лишних полей и комментариев. " +
             "JSON должен содержать одну тему с названием: \\\"%s\\\". " +
             "Добавь ровно 3 уникальных вопроса по этой теме на русском языке. " +
-            "К каждому вопросу придумай ровно 3 варианта ответа на русском, где только один из них должен иметь " +
+            "К каждому вопросу придумай ровно 3 варианта ответа на русском, где только один из них должен иметь перемешай ответы случайным образом, ответы не должны быть примитивными, а должны содержать осмысленную информацию. " +
             "\\\"isCorrect\\\": true, остальные \\\"isCorrect\\\": false. " +
             "Все вопросы и ответы должны отличаться между собой по смыслу и формулировке. " +
             "Используй только следующие поля: \\\"topic\\\", \\\"questions\\\", \\\"question\\\", \\\"answers\\\", \\\"text\\\", \\\"isCorrect\\\".";
@@ -58,7 +56,7 @@ public class QuestiontService {
     private final AnswerRepository answerRepository;
 
     public QuestionDtoRes create(QuestionDtoRq questionDtoRq) {
-        String jsonBody = String.format(JSON_BODY.formatted(PROMT_MESSAGE.formatted(questionDtoRq.getTopic())));
+        String jsonBody = String.format(JSON_BODY.formatted(PROMPT_MESSAGE.formatted(questionDtoRq.getTopic())));
         RequestBody body = RequestBody.create(jsonBody, JSON);
 
         Request request = buildRequest(body);

@@ -27,7 +27,7 @@
             <column name="id" type="serial">
                 <constraints primaryKey="true" primaryKeyName="advert_id_pk"/>
             </column>
-            <column name="name" type="varchar(150)">
+            <column name="name" type="TEXT">
                 <constraints nullable="false"/>
             </column>
             <column name="is_correct" type="boolean">
