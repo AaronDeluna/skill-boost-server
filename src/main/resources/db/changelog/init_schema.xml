@@ -41,4 +41,27 @@
             </column>
         </createTable>
     </changeSet>
+    
+    <changeSet id="202503021720" author="IvanM">
+        <createTable tableName="user_answer">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="user_answer_id_pk"/>
+            </column>
+            <column name="question_id" type="int">
+                <constraints nullable="false"
+                             referencedTableName="question"
+                             referencedColumnNames="id"
+                             foreignKeyName="question_id_fk"/>
+            </column>
+            <column name="answer_id" type="int">
+                <constraints nullable="false"
+                             referencedTableName="answer"
+                             referencedColumnNames="id"
+                             foreignKeyName="answer_id_fk"/>
+            </column>
+            <column name="is_correct" type="boolean">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
 </databaseChangeLog>
