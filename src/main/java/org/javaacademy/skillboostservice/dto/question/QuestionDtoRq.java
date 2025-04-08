@@ -1,4 +1,4 @@
-package org.javaacademy.skillboostservice.dto;
+package org.javaacademy.skillboostservice.dto.question;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
