@@ -10,7 +10,7 @@ public interface UserAnswerRepository extends JpaRepository<UserAnswer, Integer>
             SELECT count(*)
             FROM user_answer
             JOIN question ON user_answer.question_id = question.id
-            WHERE chat_id = :chatId
+            WHERE question.chat_id = :chatId
                    """, nativeQuery = true)
     Integer countAllByChatId(@Param("chatId") Long chatId);
 
