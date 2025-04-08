@@ -14,6 +14,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -44,5 +45,21 @@ public class Question {
         this.chatId = chatId;
         this.topic = topic;
         this.name = name;
+    }
+
+    public Answer getCorrectAnswer() {
+        return answers.stream()
+                .filter(Answer::getIsCorrect)
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Ошибка при поиске корректного ответа"));
+    }
+
+    public Answer getUserAnswerById(Integer answerId) {
+        return answers.stream()
+                .filter(answer -> Objects.equals(answerId, answer.getId()))
+                .findFirst()
+                .orElseThrow(
+                        () -> new RuntimeException("Ответ с id: %s не найден".formatted(answerId))
+                );
     }
 }
